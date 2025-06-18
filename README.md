@@ -5,6 +5,10 @@ Streamlit dashboard for thermal plant generation optimization using real-time pr
 
 This Streamlit app provides a flexible interface for simulating and optimizing thermal power plant generation using price forecasts and discom schedules. 
 
+
+![image](https://github.com/user-attachments/assets/524f2b69-54a0-4401-a579-cd54ce18f269)
+
+
 ---
 
 ## 📌 Features
@@ -29,3 +33,8 @@ This Streamlit app provides a flexible interface for simulating and optimizing t
 │   ├── sample_price_forecast.csv
 │   └── sample_schedule.csv
 
+👨‍💻 Author
+Harsh Gupta
+Data Scientist
+📧 hgpt999@gmail.com
+📍 New Delhi, India
