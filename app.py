@@ -57,12 +57,11 @@ else:
     selected_date = st.sidebar.date_input("Select Date for Price Forecast", value=datetime.date.today())
     query_date = selected_date.strftime("%d-%m-%Y")
     try:
-        client=MongoClient("mongodb://ITTeam:memi%40123456@103.239.139.244:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256")
-        db = client['admin']
-        collections = db['IEX_DAM_MarketSnapshot']
-        data = collections.find({'date':query_date}, {'_id':0 })
-        df=pd.DataFrame(list(data))
-        price_forecast = list(df['mcp'])
+        client = MongoClient("mongodb://localhost:27017")
+        db = client["your_db"]
+        collection = db["your_price_forecast_collection"]
+        forecast_cursor = collection.find({"date": query_date}).sort("block", 1)
+        price_forecast = [doc["price"] for doc in forecast_cursor]
         #query_date
         if len(price_forecast) < num_blocks:
             last_price = price_forecast[-1] if price_forecast else 1500
