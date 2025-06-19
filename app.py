@@ -229,20 +229,15 @@ fig.add_trace(go.Scatter(
 fig.update_layout(height=700, title_text="Thermal Plant Operation Results", template="plotly_white", showlegend=True)
 # Row 1 - Price (left y-axis)
 fig.update_yaxes(
-    title=dict(text="Price (₹/MWh)"), font=dict(color="red"),
+    title=dict(text="Price (₹/MWh)", font=dict(color="red")),
     tickfont=dict(color="red"),
-    row=1, col=1, secondary_y=False,
-    showline=True,
-    linecolor='red'
+    row=1, col=1, secondary_y=False
 )
-
 # Row 1 - Generation (right y-axis)
 fig.update_yaxes(
     title=dict(text="Generation (MW)", font=dict(color="blue")),
     tickfont=dict(color="blue"),
     row=1, col=1, secondary_y=True,
-    showline=True,
-    linecolor='blue'
 )
 
 
@@ -251,8 +246,6 @@ fig.update_yaxes(
     title=dict(text="Net Profit (₹)", font=dict(color="green")),
     tickfont=dict(color="green"),
     row=2, col=1, secondary_y=False,
-    showline=True,
-    linecolor='green'
 )
 
 # Row 2 - Cumulative Profit (right y-axis)
@@ -260,8 +253,6 @@ fig.update_yaxes(
     title=dict(text="Cumulative Profit (₹)", font=dict(color="black")),
     tickfont=dict(color="black"),
     row=2, col=1, secondary_y=True,
-    showline=True,
-    linecolor='black'
 )
 
 st.plotly_chart(fig, use_container_width=True)
