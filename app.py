@@ -233,9 +233,23 @@ fig.update_yaxes(
     row=1, col=1, secondary_y=False
 )
 
-fig.update_yaxes(title_text="Generation (MW)", row=1, col=1, secondary_y=True)
-fig.update_yaxes(title_text="Net Profit (₹)", row=2, col=1, secondary_y=False)
-fig.update_yaxes(title_text="Cumulative Profit (₹)", row=2, col=1, secondary_y=True)
+fig.update_yaxes(
+    title=dict(text="Generation (MW)", font=dict(color="blue")),
+    tickfont=dict(color="blue"),
+    row=1, col=1, secondary_y=True
+)
+
+fig.update_yaxes(
+    title=dict(text="Net Profit (₹)", font=dict(color="green")),
+    tickfont=dict(color="green"),
+    row=2, col=1, secondary_y=False
+)
+
+fig.update_yaxes(
+    title=dict(text="Cumulative Profit (₹)", font=dict(color="black")),
+    tickfont=dict(color="black"),
+    row=2, col=1, secondary_y=True
+)
 
 st.plotly_chart(fig, use_container_width=True)
 
