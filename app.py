@@ -238,11 +238,11 @@ fig.update_yaxes(
 
 # Row 1 - Generation (right y-axis)
 fig.update_yaxes(
-    title=dict(text="Generation (MW)", font=dict(color="blue")),
-    tickfont=dict(color="blue"),
+    title=dict(text="Generation (MW)", font=dict(color="black")),
+    tickfont=dict(color="black"),
     row=1, col=1, secondary_y=True,
     showline=True,
-    linecolor='blue'
+    linecolor='black'
 )
 
 # Row 2 - Net Profit (left y-axis)
