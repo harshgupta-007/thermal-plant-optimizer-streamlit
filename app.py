@@ -230,8 +230,11 @@ fig.add_trace(go.Scatter(
 
 fig.update_layout(height=700, title_text="Thermal Plant Operation Results", template="plotly_white", showlegend=True)
 
-fig.update_yaxes(title_text="Price (₹/MWh)", titlefont=dict(color="red"), tickfont=dict(color="red"),
-                 row=1, col=1, secondary_y=False)
+fig.update_yaxes(
+    title=dict(text="Price (₹/MWh)", font=dict(color="red")),
+    tickfont=dict(color="red"),
+    row=1, col=1, secondary_y=False
+)
 
 fig.update_yaxes(title_text="Generation (MW)", titlefont=dict(color="blue"), tickfont=dict(color="blue"),
                  row=1, col=1, secondary_y=True)
