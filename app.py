@@ -43,11 +43,23 @@ st.sidebar.markdown("### 📈 Price Forecast Source")
 price_input_method = st.sidebar.radio("Select Price Input Method", ["Simulate", "Upload CSV", "From MongoDB"])
 
 if price_input_method == "Simulate":
-    base_prices = [1400, 1350, 1300, 1250, 1200, 1150, 1100, 1500, 1600, 1800, 2000, 2200,
-                   2100, 1900, 1700, 1500]
+    base_prices = [
+10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,
+9800.17, 7000.96, 9800.6, 6499.58, 5000.82, 4896.07, 4811.22, 4679.06,
+4579.79, 4429.74, 3378.16, 3380.64, 3380.74, 3420.1, 3640.46, 3769.39,
+3560.18, 3470, 3050.45, 2870.02, 2526.98, 1999.64, 1596.7, 1519.28,
+1519.2, 1408.28, 1379.71, 1379.8, 1379.35, 1379.07, 1199.81, 1199.95,
+1500.88, 1552.24, 1596.47, 1596.82, 1596.72, 1596.99, 1870.31, 1807.46,
+1807.98, 1807.72, 1596.41, 1596.77, 1999.22, 1999.56, 1999.88, 2360.79,
+2400.26, 2400.84, 2630.19, 2620.84, 2622.08, 2630.87, 2780.11, 2800.42,
+2870.59, 3050.29, 3140.27, 3205.5, 3260.77, 3380.65, 3640, 3821.6,
+4000.67, 4310.19, 10000, 10000, 10000, 10000, 10000, 10000, 10000,
+10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000,
+10000, 10000, 10000
+]
     price_forecast = list(np.tile(base_prices, int(np.ceil(num_blocks / len(base_prices)))))[:num_blocks]
 elif price_input_method == "Upload CSV":
-    uploaded_price = st.sidebar.file_uploader("Upload Price Forecast CSV", type="csv")
+    uploaded_price = st.sidebar.file_uploader("Upload Price Forecast CSV First column Price", type="csv")
     if uploaded_price:
         df_price = pd.read_csv(uploaded_price)
         price_forecast = df_price.iloc[:, 0].tolist()[:num_blocks]
@@ -188,20 +200,66 @@ results_df = pd.DataFrame(data)
 # -----------------------------
 # Plotly Chart
 # -----------------------------
-fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
-                    specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
-                    subplot_titles=("Price & Generation", "Net Profit & Cumulative Profit"))
+# Sample input lists (replace these with your actual DataFrame columns)
+blocks = list(range(96))
+generation = results_df["P[t] (MW)"].tolist()
+price_forecast = results_df["Price (₹/MWh)"].tolist()
+net_profit_list = results_df["Net Profit (₹)"].tolist()
+cumulative_profit = np.cumsum(net_profit_list).tolist()
 
-fig.add_trace(go.Scatter(x=blocks, y=price_forecast, name="Price (₹/MWh)", line=dict(color='red')), row=1, col=1, secondary_y=False)
-fig.add_trace(go.Scatter(x=blocks, y=generation, name="Generation (MW)", line=dict(color='blue')), row=1, col=1, secondary_y=True)
-fig.add_trace(go.Bar(x=blocks, y=net_profit_list, name="Net Profit", marker_color=['green' if x >= 0 else 'crimson' for x in net_profit_list]), row=2, col=1, secondary_y=False)
-fig.add_trace(go.Scatter(x=blocks, y=np.cumsum(net_profit_list), name="Cumulative Profit", line=dict(color='black', dash='dash')), row=2, col=1, secondary_y=True)
+# Create 2-row subplot
+fig = make_subplots(
+    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
+    specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
+    subplot_titles=("Price & Generation", "Net Profit & Cumulative Profit")
+)
 
-fig.update_layout(height=700, title_text="Thermal Plant Operation Results", template="plotly_white", showlegend=True)
-fig.update_yaxes(title_text="Price (₹/MWh)", row=1, col=1, secondary_y=False)
-fig.update_yaxes(title_text="Generation (MW)", row=1, col=1, secondary_y=True)
-fig.update_yaxes(title_text="Net Profit (₹)", row=2, col=1, secondary_y=False)
-fig.update_yaxes(title_text="Cumulative Profit (₹)", row=2, col=1, secondary_y=True)
+# Row 1 - Price (with small red circles)
+fig.add_trace(go.Scatter(
+    x=blocks, y=price_forecast, name="Price (₹/MWh)",
+    mode='lines+markers',
+    marker=dict(size=7, color='red', line=dict(width=1, color='darkred')),
+    line=dict(color='red')
+), row=1, col=1, secondary_y=False)
+
+# Row 1 - Generation (with larger blue circles)
+fig.add_trace(go.Scatter(
+    x=blocks, y=generation, name="Generation (MW)",
+    mode='lines+markers',
+    marker=dict(size=5, color='blue', line=dict(width=1, color='darkblue')),
+    line=dict(color='blue')
+), row=1, col=1, secondary_y=True)
+
+# Row 2 - Net Profit bars
+fig.add_trace(go.Bar(
+    x=blocks, y=net_profit_list, name="Net Profit",
+    marker_color=['green' if x >= 0 else 'crimson' for x in net_profit_list]
+), row=2, col=1, secondary_y=False)
+
+# Row 2 - Cumulative Profit dashed line
+fig.add_trace(go.Scatter(
+    x=blocks, y=cumulative_profit, name="Cumulative Profit",
+    line=dict(color='black', dash='dash')
+), row=2, col=1, secondary_y=True)
+
+# Update layout and axes colors
+fig.update_layout(
+    height=700,
+    title_text="Thermal Plant Operation Results",
+    template="plotly_white",
+    showlegend=True,
+    hovermode="x unified"
+)
+
+# Y-axis color mapping
+fig.update_yaxes(title_text="Price (₹/MWh)", titlefont=dict(color='red'), tickfont=dict(color='red'),
+                 row=1, col=1, secondary_y=False)
+fig.update_yaxes(title_text="Generation (MW)", titlefont=dict(color='blue'), tickfont=dict(color='blue'),
+                 row=1, col=1, secondary_y=True)
+fig.update_yaxes(title_text="Net Profit (₹)", titlefont=dict(color='green'), tickfont=dict(color='green'),
+                 row=2, col=1, secondary_y=False)
+fig.update_yaxes(title_text="Cumulative Profit (₹)", titlefont=dict(color='black'), tickfont=dict(color='black'),
+                 row=2, col=1, secondary_y=True)
 
 st.plotly_chart(fig, use_container_width=True)
 
