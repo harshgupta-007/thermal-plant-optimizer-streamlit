@@ -200,68 +200,48 @@ results_df = pd.DataFrame(data)
 # -----------------------------
 # Plotly Chart
 # -----------------------------
-# Sample input lists (replace these with your actual DataFrame columns)
-# blocks = list(range(96))
-# generation = results_df["P[t] (MW)"].tolist()
-# price_forecast = results_df["Price (₹/MWh)"].tolist()
-# net_profit_list = results_df["Net Profit (₹)"].tolist()
-# cumulative_profit = np.cumsum(net_profit_list).tolist()
+fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
+                    specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
+                    subplot_titles=("Price & Generation", "Net Profit & Cumulative Profit"))
 
-# Create 2-row subplot
-fig = make_subplots(
-    rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
-    specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
-    subplot_titles=("Price & Generation", "Net Profit & Cumulative Profit")
-)
-
-# Row 1 - Price (with small red circles)
 fig.add_trace(go.Scatter(
     x=blocks, y=price_forecast, name="Price (₹/MWh)",
     mode='lines+markers',
-    marker=dict(size=7, color='red', line=dict(width=1, color='darkred')),
-    line=dict(color='red')
+    line=dict(color='red'),
+    marker=dict(size=6, color='red', line=dict(width=1, color='darkred'))
 ), row=1, col=1, secondary_y=False)
 
-# Row 1 - Generation (with larger blue circles)
 fig.add_trace(go.Scatter(
     x=blocks, y=generation, name="Generation (MW)",
     mode='lines+markers',
-    marker=dict(size=5, color='blue', line=dict(width=1, color='darkblue')),
-    line=dict(color='blue')
+    line=dict(color='blue'),
+    marker=dict(size=12, color='blue', line=dict(width=1, color='darkblue'))
 ), row=1, col=1, secondary_y=True)
 
-# Row 2 - Net Profit bars
 fig.add_trace(go.Bar(
     x=blocks, y=net_profit_list, name="Net Profit",
     marker_color=['green' if x >= 0 else 'crimson' for x in net_profit_list]
 ), row=2, col=1, secondary_y=False)
 
-# Row 2 - Cumulative Profit dashed line
 fig.add_trace(go.Scatter(
-    x=blocks, y=cumulative_profit, name="Cumulative Profit",
+    x=blocks, y=np.cumsum(net_profit_list), name="Cumulative Profit",
     line=dict(color='black', dash='dash')
 ), row=2, col=1, secondary_y=True)
 
-# Update layout and axes colors
-fig.update_layout(
-    height=700,
-    title_text="Thermal Plant Operation Results",
-    template="plotly_white",
-    showlegend=True,
-    hovermode="x unified"
-)
+fig.update_layout(height=700, title_text="Thermal Plant Operation Results", template="plotly_white", showlegend=True)
 
-# Y-axis color mapping
-fig.update_yaxes(title_text="Price (₹/MWh)", titlefont=dict(color='red'), tickfont=dict(color='red'),
+fig.update_yaxes(title_text="Price (₹/MWh)", titlefont=dict(color="red"), tickfont=dict(color="red"),
                  row=1, col=1, secondary_y=False)
-fig.update_yaxes(title_text="Generation (MW)", titlefont=dict(color='blue'), tickfont=dict(color='blue'),
+
+fig.update_yaxes(title_text="Generation (MW)", titlefont=dict(color="blue"), tickfont=dict(color="blue"),
                  row=1, col=1, secondary_y=True)
-fig.update_yaxes(title_text="Net Profit (₹)", titlefont=dict(color='green'), tickfont=dict(color='green'),
-                 row=2, col=1, secondary_y=False)
-fig.update_yaxes(title_text="Cumulative Profit (₹)", titlefont=dict(color='black'), tickfont=dict(color='black'),
-                 row=2, col=1, secondary_y=True)
+
+fig.update_yaxes(title_text="Net Profit (₹)", row=2, col=1, secondary_y=False)
+
+fig.update_yaxes(title_text="Cumulative Profit (₹)", row=2, col=1, secondary_y=True)
 
 st.plotly_chart(fig, use_container_width=True)
+
 
 # -----------------------------
 # Export
