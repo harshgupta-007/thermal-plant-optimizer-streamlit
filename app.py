@@ -210,7 +210,12 @@ fig.add_trace(go.Scatter(
     line=dict(color='red'),
     marker=dict(size=7, color='red', line=dict(width=1, color='darkred'))
 ), row=1, col=1, secondary_y=False)
-fig.add_trace(go.Scatter(x=blocks, y=generation, name="Generation (MW)",mode='lines+markers', line=dict(color='blue')), row=1, col=1, secondary_y=True)
+fig.add_trace(go.Scatter(
+    x=blocks, y=generation, name="Generation (MW)",
+    mode='lines+markers',
+    line=dict(color='blue'),
+    marker=dict(size=5, color='blue', line=dict(width=1, color='darkblue'))
+), row=1, col=1, secondary_y=True)
 fig.add_trace(go.Bar(x=blocks, y=net_profit_list, name="Net Profit", marker_color=['green' if x >= 0 else 'crimson' for x in net_profit_list]), row=2, col=1, secondary_y=False)
 fig.add_trace(go.Scatter(x=blocks, y=np.cumsum(net_profit_list), name="Cumulative Profit", line=dict(color='black', dash='dash')), row=2, col=1, secondary_y=True)
 
