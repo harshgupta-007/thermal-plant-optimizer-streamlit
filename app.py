@@ -227,7 +227,7 @@ fig.add_trace(go.Scatter(
 ), row=2, col=1, secondary_y=True)
 
 fig.update_layout(height=700, title_text="Thermal Plant Operation Results", template="plotly_white", showlegend=True)
-fig.update_yaxes(title_text="Price (₹/MWh)", titlefont=dict(color="red"),row=1, col=1, secondary_y=False)
+fig.update_yaxes(title_text="Price (₹/MWh)",row=1, col=1, secondary_y=False)
 fig.update_yaxes(title_text="Generation (MW)", row=1, col=1, secondary_y=True)
 fig.update_yaxes(title_text="Net Profit (₹)", row=2, col=1, secondary_y=False)
 fig.update_yaxes(title_text="Cumulative Profit (₹)", row=2, col=1, secondary_y=True)
