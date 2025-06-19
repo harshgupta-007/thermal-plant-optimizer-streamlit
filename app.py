@@ -201,11 +201,11 @@ results_df = pd.DataFrame(data)
 # Plotly Chart
 # -----------------------------
 # Sample input lists (replace these with your actual DataFrame columns)
-blocks = list(range(96))
-generation = results_df["P[t] (MW)"].tolist()
-price_forecast = results_df["Price (₹/MWh)"].tolist()
-net_profit_list = results_df["Net Profit (₹)"].tolist()
-cumulative_profit = np.cumsum(net_profit_list).tolist()
+# blocks = list(range(96))
+# generation = results_df["P[t] (MW)"].tolist()
+# price_forecast = results_df["Price (₹/MWh)"].tolist()
+# net_profit_list = results_df["Net Profit (₹)"].tolist()
+# cumulative_profit = np.cumsum(net_profit_list).tolist()
 
 # Create 2-row subplot
 fig = make_subplots(
