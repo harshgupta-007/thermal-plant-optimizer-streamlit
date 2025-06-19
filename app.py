@@ -204,8 +204,8 @@ fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1,
                     specs=[[{"secondary_y": True}], [{"secondary_y": True}]],
                     subplot_titles=("Price & Generation", "Net Profit & Cumulative Profit"))
 
-fig.add_trace(go.Scatter(x=blocks, y=price_forecast, name="Price (₹/MWh)",mode='lines+markers', line=dict(color='red')), row=1, col=1, secondary_y=False)
-fig.add_trace(go.Scatter(x=blocks, y=generation, name="Generation (MW)", line=dict(color='blue')), row=1, col=1, secondary_y=True)
+fig.add_trace(go.Scatter(x=blocks, y=price_forecast, name="Price (₹/MWh)",mode='lines+markers', line=dict(color='red')), marker=dict(size=7, color='red', line=dict(width=1, color='darkred')), secondary_y=False)
+fig.add_trace(go.Scatter(x=blocks, y=generation, name="Generation (MW)",mode='lines+markers', line=dict(color='blue')), row=1, col=1, secondary_y=True)
 fig.add_trace(go.Bar(x=blocks, y=net_profit_list, name="Net Profit", marker_color=['green' if x >= 0 else 'crimson' for x in net_profit_list]), row=2, col=1, secondary_y=False)
 fig.add_trace(go.Scatter(x=blocks, y=np.cumsum(net_profit_list), name="Cumulative Profit", line=dict(color='black', dash='dash')), row=2, col=1, secondary_y=True)
 
